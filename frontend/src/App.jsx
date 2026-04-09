@@ -1,0 +1,80 @@
+import React, { useState, useEffect } from 'react';
+import './App.css';
+
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import PlotsPage from './pages/PlotsPage';
+import LocationsPage from './pages/LocationsPage';
+import ProjectsPage from './pages/ProjectsPage';
+import AmenitiesPage from './pages/AmenitiesPage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import BookVisitPage from './pages/BookVisitPage';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminLogin from './pages/AdminLogin';
+
+function App() {
+  const [currentPage, setCurrentPage] = useState('home');
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+
+  // Handle scroll to top and hash-based navigation
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    
+    // Listen for hash change for "hidden" admin access
+    const handleHash = () => {
+      if (window.location.hash === '#admin') {
+        setCurrentPage('admin');
+      }
+    };
+    
+    handleHash(); // Check on mount
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, [currentPage]);
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return <Home onNavigate={setCurrentPage} />;
+      case 'plots':
+        return <PlotsPage />;
+      case 'locations':
+        return <LocationsPage />;
+      case 'projects':
+        return <ProjectsPage />;
+      case 'amenities':
+        return <AmenitiesPage />;
+      case 'about':
+        return <AboutPage />;
+      case 'contact':
+        return <ContactPage />;
+      case 'book-visit':
+        return <BookVisitPage />;
+      case 'admin':
+        if (!isAdminAuthenticated) {
+          return <AdminLogin 
+            onLogin={() => setIsAdminAuthenticated(true)} 
+            onBack={() => setCurrentPage('home')}
+          />;
+        }
+        return <AdminDashboard onLogout={() => {
+          setIsAdminAuthenticated(false);
+          setCurrentPage('home');
+        }} />;
+      default:
+        return <Home onNavigate={setCurrentPage} />;
+    }
+  };
+
+  return (
+    <div className="app">
+      <Layout currentPage={currentPage} onNavigate={setCurrentPage}>
+        {renderPage()}
+      </Layout>
+    </div>
+  );
+}
+
+export default App;
+
