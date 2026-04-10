@@ -1389,14 +1389,15 @@ h4,
   .brand-sub {
     font-size: 0.6rem;
   }
-  
+
   .price {
     font-size: 1.2rem;
   }
 }
 
 /* Prevent horizontal scroll on mobile overall */
-html, body {
+html,
+body {
   overflow-x: hidden;
   width: 100%;
 }
