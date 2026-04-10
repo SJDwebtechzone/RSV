@@ -12,6 +12,7 @@ import ContactPage from './pages/ContactPage';
 import BookVisitPage from './pages/BookVisitPage';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+const API = import.meta.env.VITE_API_URL;
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
