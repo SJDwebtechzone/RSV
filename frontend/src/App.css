@@ -9,8 +9,17 @@
   --text-light: #636E72;
   --glass-white: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.2);
-  --section-padding: 10rem;
+  --section-padding: clamp(4rem, 10vw, 10rem);
   --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Responsive Typography Base */
+  --font-xs: clamp(0.7rem, 0.7rem + 0.1vw, 0.8rem);
+  --font-sm: clamp(0.85rem, 0.85rem + 0.1vw, 0.95rem);
+  --font-base: clamp(0.95rem, 0.95rem + 0.1vw, 1.05rem);
+  --font-md: clamp(1.1rem, 1.1rem + 0.2vw, 1.3rem);
+  --font-lg: clamp(1.5rem, 1.5rem + 0.5vw, 2.2rem);
+  --font-xl: clamp(2.2rem, 2.2rem + 1vw, 3.8rem);
+  --font-hero: clamp(2.8rem, 2.8rem + 5vw, 7rem);
 }
 
 .nav-link-btn {
@@ -239,6 +248,46 @@ h4,
 
 .nav-links li a:hover {
   opacity: 1;
+  color: var(--accent-gold);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--glass-white);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  min-width: 160px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  animation: dropdownFade 0.3s forwards ease-in-out;
+}
+
+@keyframes dropdownFade {
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.dropdown-item {
+  color: var(--primary-dark);
+  padding: 0.8rem 1.5rem;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: var(--transition-smooth);
+  width: 100%;
+}
+
+.dropdown-item:hover {
+  background: rgba(193, 160, 110, 0.1);
   color: var(--accent-gold);
 }
 
@@ -1395,9 +1444,124 @@ h4,
   }
 }
 
-/* Prevent horizontal scroll on mobile overall */
+.responsive-form-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* BuyPage Filter Bar */
+.buy-filter-bar {
+  background: var(--primary-dark);
+  padding: 1.5rem;
+  margin-bottom: 3rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-end;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 900px) {
+  .buy-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+  }
+}
+
+.amenities-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  padding-left: 2rem;
+}
+
+@media (max-width: 768px) {
+  .responsive-form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .amenities-checkbox-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .amenities-checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Contact Cards Grid */
+.contact-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+}
+
+@media (max-width: 900px) {
+  .contact-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* Fluid Typography Implementation */
+h1,
+.hero-text-side h1,
+.about-hero h1,
+.contact-hero h1,
+.buy-hero h1 {
+  font-size: var(--font-hero);
+}
+
+h2,
+.section-title {
+  font-size: var(--font-xl);
+}
+
+h3 {
+  font-size: var(--font-lg);
+}
+
+h4 {
+  font-size: var(--font-md);
+}
+
+p,
+li,
+button,
+input,
+select,
+textarea {
+  font-size: var(--font-base);
+}
+
+span.tag {
+  font-size: var(--font-xs);
+}
+
+/* Prevent horizontal overflow on mobile overall */
 html,
 body {
   overflow-x: hidden;
   width: 100%;
+}
+
+/* Image Optimization Utility */
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
 }

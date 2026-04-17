@@ -15,7 +15,7 @@ const LocationPill = ({ name, plots, image, index }) => (
         src={image} 
         alt={name} 
         onError={(e) => {
-          e.target.src = 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=200';
+          e.target.src = 'https://images.unsplash.com/photo-1541888052187-5735165dcba9?q=80&w=200';
           e.target.onerror = null; 
         }}
         style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
@@ -31,9 +31,9 @@ const LocationPill = ({ name, plots, image, index }) => (
 
 const Locations = () => {
   const locations = [
-    { name: 'OMR', plots: '120+', image: 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=200' },
-    { name: 'ECR', plots: '95+', image: 'https://images.pexels.com/photos/1001682/pexels-photo-1001682.jpeg?auto=compress&cs=tinysrgb&w=200' },
-    { name: 'Tambaram', plots: '80+', image: 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=200' },
+    { name: 'OMR', plots: '120+', image: 'https://images.unsplash.com/photo-1570214476695-19bd467e6f7a?q=80&w=2070&auto=format&fit=crop' },
+    { name: 'ECR', plots: '95+', image: 'https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=2070&auto=format&fit=crop' },
+    { name: 'Tambaram', plots: '80+', image: 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?q=80&w=2010&auto=format&fit=crop' },
   ];
 
   return (

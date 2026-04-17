@@ -12,6 +12,8 @@ import ContactPage from './pages/ContactPage';
 import BookVisitPage from './pages/BookVisitPage';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+import BuyPage from './pages/BuyPage';
+import SellPage from './pages/SellPage';
 const API = import.meta.env.VITE_API_URL;
 
 function App() {
@@ -35,6 +37,16 @@ function App() {
   }, [currentPage]);
 
   const renderPage = () => {
+    if (currentPage.startsWith('buy')) {
+      const category = currentPage.split('-')[1] || 'all';
+      return <BuyPage category={category} />;
+    }
+    
+    if (currentPage.startsWith('sell')) {
+      const category = currentPage.split('-')[1] || '';
+      return <SellPage category={category} />;
+    }
+
     switch (currentPage) {
       case 'home':
         return <Home onNavigate={setCurrentPage} />;
@@ -47,7 +59,7 @@ function App() {
       case 'amenities':
         return <AmenitiesPage />;
       case 'about':
-        return <AboutPage />;
+        return <AboutPage onNavigate={setCurrentPage} />;
       case 'contact':
         return <ContactPage />;
       case 'book-visit':

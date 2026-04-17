@@ -11,8 +11,8 @@ import LatestUpdates from '../components/LatestUpdates';
 const Home = ({ onNavigate }) => {
   return (
     <>
-      <Hero />
-      <SearchBar onSearch={() => onNavigate('plots')} />
+      <Hero onNavigate={onNavigate} />
+      <SearchBar onSearch={() => onNavigate('buy')} />
       <FeaturedProjects />
       <Amenities />
       <Locations onSelectLocation={() => onNavigate('locations')} />

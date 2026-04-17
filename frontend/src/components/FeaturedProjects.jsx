@@ -57,33 +57,33 @@ const ProjectCard = ({ project }) => {
 const FeaturedProjects = () => {
   const projects = [
     {
-      title: 'The Emerald Corridor',
+      title: 'Luxury Residential Villas',
       location: 'Thaiyur, OMR',
       price: '4,999',
-      tag: 'Luxury',
+      tag: 'Residential',
       images: [
-        'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=800',
-        'https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=800'
+        'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop'
       ]
     },
     {
-      title: 'The Coastal Enclave',
+      title: 'Prime Commercial Hub',
       location: 'Mahabalipuram, ECR',
       price: '6,499',
-      tag: 'Elite',
+      tag: 'Commercial',
       images: [
-        'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=800',
-        'https://images.pexels.com/photos/209296/pexels-photo-209296.jpeg?auto=compress&cs=tinysrgb&w=800'
+        'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop'
       ]
     },
     {
-      title: 'Tambaram Heights',
+      title: 'Premium Land Plots',
       location: 'West Tambaram',
       price: '3,999',
-      tag: 'Prime',
+      tag: 'Land',
       images: [
-        'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800',
-        'https://images.pexels.com/photos/2251247/pexels-photo-2251247.jpeg?auto=compress&cs=tinysrgb&w=800'
+        'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2064&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1629851605336-f3ccb0eceb9e?q=80&w=2074&auto=format&fit=crop'
       ]
     }
   ];

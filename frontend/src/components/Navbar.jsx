@@ -16,23 +16,43 @@ const Navbar = ({ onNavigate, currentPage }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const [dropdownOpen, setDropdownOpen] = useState(null);
+
   const navLinks = [
     { name: 'Home', id: 'home' },
-    { name: 'Plots', id: 'plots' },
-    { name: 'Locations', id: 'locations' },
-    { name: 'Projects', id: 'projects' },
-    { name: 'Amenities', id: 'amenities' },
     { name: 'About', id: 'about' },
+    {
+      name: 'Buy', id: 'buy',
+      dropdown: [
+        { name: 'Residential', id: 'buy-residential' },
+        { name: 'Commercial', id: 'buy-commercial' },
+        { name: 'Land', id: 'buy-land' }
+      ]
+    },
+    {
+      name: 'Sell', id: 'sell',
+      dropdown: [
+        { name: 'Residential', id: 'sell-residential' },
+        { name: 'Commercial', id: 'sell-commercial' },
+        { name: 'Land', id: 'sell-land' }
+      ]
+    },
+    { name: 'Rental property', id: 'rental-property' },
+    { name: 'Sold leased', id: 'sold-leased' },
     { name: 'Contact', id: 'contact' },
   ];
 
   const handleNavClick = (id) => {
+    if (id === 'rental-property' || id === 'sold-leased') return;
     onNavigate(id);
     setIsOpen(false);
+    setDropdownOpen(null);
   };
 
+  const isLightPage = ['sell'].some(page => currentPage.startsWith(page));
+
   return (
-    <nav className={`navbar ${isScrolled ? 'scrolled' : ''} ${isOpen ? 'menu-open' : ''}`}>
+    <nav className={`navbar ${isScrolled || isLightPage ? 'scrolled' : ''} ${isOpen ? 'menu-open' : ''}`}>
       <div className="container nav-content">
         <div className="logo-section" onClick={() => handleNavClick('home')} style={{ cursor: 'pointer' }}>
           <img src={logoImg} alt="RSV GROUPS logo" className="navbar-logo" />
@@ -44,19 +64,41 @@ const Navbar = ({ onNavigate, currentPage }) => {
 
         <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
           {navLinks.map((link) => (
-            <li key={link.id}>
-              <button 
+            <li
+              key={link.id}
+              className={link.dropdown ? 'dropdown-parent' : ''}
+              onMouseEnter={() => setDropdownOpen(link.id)}
+              onMouseLeave={() => setDropdownOpen(null)}
+              style={link.dropdown ? { position: 'relative' } : {}}
+            >
+              <button
                 onClick={() => handleNavClick(link.id)}
                 className={`nav-link-btn ${currentPage === link.id ? 'active' : ''}`}
               >
-                {link.name}
+                {link.name} {link.dropdown && <span style={{ fontSize: '0.6em', marginLeft: '4px', verticalAlign: 'middle' }}>▼</span>}
               </button>
+              {link.dropdown && dropdownOpen === link.id && (
+                <div className="dropdown-menu">
+                  {link.dropdown.map(drop => (
+                    <button
+                      key={drop.id}
+                      className="dropdown-item"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNavClick(drop.id);
+                      }}
+                    >
+                      {drop.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </li>
           ))}
         </ul>
 
         <div className="nav-actions">
-          <button 
+          <button
             className="book-btn hide-mobile"
             onClick={() => handleNavClick('book-visit')}
           >
@@ -64,9 +106,9 @@ const Navbar = ({ onNavigate, currentPage }) => {
           </button>
           <button className="menu-toggle" onClick={toggleMenu} aria-label="Toggle Menu">
             {isOpen ? (
-              <X size={24} color={isScrolled ? "#0F1A11" : "white"} />
+              <X size={24} color={isScrolled || isLightPage ? "#0F1A11" : "white"} />
             ) : (
-              <Menu size={24} color={isScrolled ? "#0F1A11" : "white"} />
+              <Menu size={24} color={isScrolled || isLightPage ? "#0F1A11" : "white"} />
             )}
           </button>
         </div>

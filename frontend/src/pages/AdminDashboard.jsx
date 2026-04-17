@@ -13,7 +13,8 @@ import {
   ArrowUpRight,
   Search,
   Bell,
-  LogOut
+  LogOut,
+  CheckCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../images/LOGO.png';
@@ -21,7 +22,30 @@ const AdminDashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('Dashboard');
   const [showAddModal, setShowAddModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  
+  const [pendingProperties, setPendingProperties] = useState([]);
+
+  useEffect(() => {
+    const loadPending = () => {
+      const props = JSON.parse(localStorage.getItem('user_properties') || '[]');
+      setPendingProperties(props.filter(p => p.status === 'pending'));
+    };
+    loadPending();
+  }, [activeTab]);
+
+  const handleApprove = (id) => {
+    const props = JSON.parse(localStorage.getItem('user_properties') || '[]');
+    const updated = props.map(p => p.id === id ? { ...p, status: 'approved' } : p);
+    localStorage.setItem('user_properties', JSON.stringify(updated));
+    setPendingProperties(updated.filter(p => p.status === 'pending'));
+  };
+
+  const handleReject = (id) => {
+    const props = JSON.parse(localStorage.getItem('user_properties') || '[]');
+    const updated = props.map(p => p.id === id ? { ...p, status: 'rejected' } : p);
+    localStorage.setItem('user_properties', JSON.stringify(updated));
+    setPendingProperties(updated.filter(p => p.status === 'pending'));
+  };
+
   const [plots, setPlots] = useState([
     { id: 1, name: "Premium Plot A1", location: "OMR, Chennai", price: "45L", size: "1200 Sq.ft", status: "Available", project: "The Royal Estate" },
     { id: 2, name: "Emerald Plot B4", location: "ECR, Chennai", price: "85L", size: "2400 Sq.ft", status: "Booked", project: "Emerald Valley" },
@@ -251,6 +275,45 @@ const AdminDashboard = ({ onLogout }) => {
           </div>
         );
 
+      case 'Approvals':
+        return (
+          <div className="admin-table-container">
+            <h3 className="serif" style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>Property Approvals</h3>
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Location</th>
+                  <th>Type</th>
+                  <th>Owner</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pendingProperties.length === 0 ? (
+                  <tr><td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>No pending properties at the moment.</td></tr>
+                ) : pendingProperties.map((prop) => (
+                  <tr key={prop.id || prop.title}>
+                    <td style={{ fontWeight: 600 }}>{prop.title}</td>
+                    <td>{prop.location}</td>
+                    <td><span style={{ textTransform: 'capitalize' }}>{prop.type}</span></td>
+                    <td>
+                      <div>{prop.ownerName}</div>
+                      <div style={{ fontSize: '0.75rem', opacity: 0.6 }}>{prop.phone}</div>
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <button onClick={() => handleApprove(prop.id)} style={{ background: '#288849', color: 'white', border: 'none', padding: '6px 14px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 'bold' }}>Approve</button>
+                        <button onClick={() => handleReject(prop.id)} style={{ background: '#d32f2f', color: 'white', border: 'none', padding: '6px 14px', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 'bold' }}>Reject</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -269,6 +332,7 @@ const AdminDashboard = ({ onLogout }) => {
             { id: 'Plots', icon: <Map size={20}/> },
             { id: 'Leads', icon: <Users size={20}/> },
             { id: 'Projects', icon: <Layers size={20}/> },
+            { id: 'Approvals', icon: <CheckCircle size={20}/> },
             { id: 'Settings', icon: <Settings size={20}/> },
           ].map((item) => (
             <div 

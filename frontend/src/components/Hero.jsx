@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldCheck, User, Phone, MapPin, Calendar, ArrowRight } from 'lucide-react';
+import { ShieldCheck, User, Phone, MapPin, Calendar, ArrowRight, CheckCircle } from 'lucide-react';
+import logoImg from '../images/LOGO.png';
 
-const Hero = () => {
+const Hero = ({ onNavigate }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);
+  const [formData, setFormData] = useState({ name: '', contact: '', region: 'Select Region' });
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setShowPopup(true);
+    setFormData({ name: '', contact: '', region: 'Select Region' });
+  };
 
   const images = [
     "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop",
@@ -62,7 +71,7 @@ const Hero = () => {
             SIGNATURE COLLECTION
           </motion.div>
 
-          <motion.h1 variants={itemVariants} style={{ fontSize: '7rem' }}>
+          <motion.h1 variants={itemVariants} style={{ fontSize: 'var(--font-hero)' }}>
             Legacy, <br />
             <span className="highlight">Defined.</span>
           </motion.h1>
@@ -97,21 +106,21 @@ const Hero = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
         >
-          <h4 className="serif" style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Site Inquiry</h4>
-          <p style={{ fontSize: '0.8rem', marginBottom: '1.5rem' }}>Schedule your private consultation.</p>
+          <h4 className="serif" style={{ fontSize: 'var(--font-lg)', marginBottom: '0.5rem' }}>Site Inquiry</h4>
+          <p style={{ fontSize: 'var(--font-sm)', marginBottom: '1.5rem' }}>Schedule your private consultation.</p>
 
-          <form>
+          <form onSubmit={handleFormSubmit}>
             <div className="input-group" style={{ marginBottom: '1rem' }}>
               <User size={16} className="input-icon" />
-              <input type="text" placeholder="Name" style={{ fontSize: '0.9rem' }} />
+              <input type="text" placeholder="Name" style={{ fontSize: '0.9rem' }} value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} required />
             </div>
             <div className="input-group" style={{ marginBottom: '1rem' }}>
               <Phone size={16} className="input-icon" />
-              <input type="text" placeholder="Contact" style={{ fontSize: '0.9rem' }} />
+              <input type="text" placeholder="Contact" style={{ fontSize: '0.9rem' }} value={formData.contact} onChange={(e) => setFormData({...formData, contact: e.target.value})} required />
             </div>
             <div className="input-group" style={{ marginBottom: '1.5rem' }}>
               <MapPin size={16} className="input-icon" />
-              <select style={{ fontSize: '0.9rem' }}>
+              <select style={{ fontSize: '0.9rem' }} value={formData.region} onChange={(e) => setFormData({...formData, region: e.target.value})}>
                 <option>Select Region</option>
                 <option>OMR Corridor</option>
                 <option>ECR Coastal</option>
@@ -123,6 +132,56 @@ const Hero = () => {
             </button>
           </form>
         </motion.div>
+
+        {/* Success Popup */}
+        <AnimatePresence>
+          {showPopup && (
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', zIndex: 9999, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+              <div style={{ 
+                background: 'linear-gradient(145deg, #112217 0%, #0a140d 100%)', 
+                padding: '4rem 3rem', 
+                borderRadius: '30px', 
+                textAlign: 'center', 
+                maxWidth: '450px', 
+                color: 'white',
+                border: '1px solid rgba(245, 130, 32, 0.2)',
+                boxShadow: '0 30px 60px rgba(0, 0, 0, 0.5)'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                     <img src={logoImg} alt="RSV Groups" style={{ width: '140px', height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0px 10px 15px rgba(0,0,0,0.3))' }} />
+                  </div>
+                </div>
+                <h3 className="serif" style={{ fontSize: '2.5rem', marginBottom: '1rem', color: 'white', letterSpacing: '1px' }}>Thank You.</h3>
+                <p style={{ marginBottom: '2.5rem', color: 'rgba(255,255,255,0.7)', fontSize: '1.1rem', lineHeight: 1.6, fontWeight: 300 }}>
+                  Thank you for visiting the <span style={{color: '#F58220', fontWeight: 600}}>RSV Groups</span> website. We appreciate your interest.
+                </p>
+                <button 
+                  onClick={() => setShowPopup(false)} 
+                  style={{ 
+                    background: '#F58220', 
+                    color: 'white', 
+                    padding: '12px 32px', 
+                    border: 'none', 
+                    borderRadius: '50px', 
+                    fontWeight: 600, 
+                    fontSize: '0.9rem',
+                    cursor: 'pointer',
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase'
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <motion.div
