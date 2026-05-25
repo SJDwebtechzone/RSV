@@ -43,7 +43,7 @@ const Navbar = ({ onNavigate, currentPage }) => {
   ];
 
   const handleNavClick = (id) => {
-    if (id === 'rental-property' || id === 'sold-leased') return;
+    if (id === 'rental-property') return;
     onNavigate(id);
     setIsOpen(false);
     setDropdownOpen(null);

@@ -54,3 +54,25 @@ INSERT INTO projects (name, status, price_range) VALUES
 ('The Royal Estate', 'Available', '₹45L - ₹1.5Cr'),
 ('Emerald Valley', 'Fast Filling', '₹85L - ₹2.5Cr'),
 ('Heritage West', 'Available', '₹32L - ₹65L');
+
+-- Sold / Leased Properties Table
+CREATE TABLE IF NOT EXISTS sold_leased (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    project_name VARCHAR(255) NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    area_sqft VARCHAR(100),
+    transaction_type ENUM('Sold', 'Leased') DEFAULT 'Sold',
+    represented ENUM('Buyer', 'Seller', 'Both Buyer & Seller') DEFAULT 'Both Buyer & Seller',
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Sample Sold/Leased Data
+INSERT INTO sold_leased (project_name, location, area_sqft, transaction_type, represented, description) VALUES
+('RSV Nagar Phase 1', 'Kundrathur Rajagopal Nagar', '600 - 2400 sqft', 'Sold', 'Both Buyer & Seller', 'Sold Out! 600 sqft to 2400 sqft Land in Kundrathur Rajagopal Nagar. RSV GROUPS Represented Both Buyer & Sellers'),
+('The Royal Estate', 'OMR, Chennai', '1200 sqft', 'Sold', 'Both Buyer & Seller', 'Premium villa plot in OMR with all amenities. RSV GROUPS facilitated smooth transaction.'),
+('RSV Business Park', 'Anna Nagar, Chennai', '3500 sqft', 'Leased', 'Seller', 'Commercial space leased for IT company. 5 year lease agreement.'),
+('Emerald Valley', 'ECR, Chennai', '2400 sqft', 'Sold', 'Buyer', 'Sea-facing residential plot sold at premium price.'),
+('RSV Industrial Hub', 'Ambattur, Chennai', '5000 sqft', 'Leased', 'Both Buyer & Seller', 'Large warehouse space leased for logistics operations.');
+

@@ -57,8 +57,8 @@ const Footer = ({ onNavigate }) => {
       </div>
 
       <div className="footer-bottom" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '2rem 0', marginTop: '3rem' }}>
-        <div className="container bottom-inner" style={{ display: 'flex', justifyContent: 'space-between', opacity: 0.5, fontSize: '0.75rem', letterSpacing: '1px' }}>
-          <p>© 2024 RSV GROUPS. ALL RIGHTS RESERVED.</p>
+        <div className="container bottom-inner" style={{ display: 'flex', justifyContent: 'space-between', opacity: 0.5, fontSize: '0.75rem', letterSpacing: '1px', alignItems: 'center' }}>
+          <p>Copyright © 2026 All rights reserved | by <a href="https://devspectra.in" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>DevSpectra</a></p>
           <p>PRIVACY POLICY | TERMS OF SERVICE</p>
         </div>
       </div>

@@ -14,27 +14,85 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import BuyPage from './pages/BuyPage';
 import SellPage from './pages/SellPage';
+import SoldLeasedPage from './pages/SoldLeasedPage';
 const API = import.meta.env.VITE_API_URL;
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
 
-  // Handle scroll to top and hash-based navigation
+  const handleNavigate = (pageId) => {
+    setCurrentPage(pageId);
+    let path = '/';
+    if (pageId === 'admin') {
+      path = '/soldleased#admin';
+    } else {
+      const pageToPathMap = {
+        'home': '/',
+        'about': '/about',
+        'contact': '/contact',
+        'plots': '/plots',
+        'locations': '/locations',
+        'projects': '/projects',
+        'amenities': '/amenities',
+        'book-visit': '/book-visit',
+        'sold-leased': '/soldleased',
+      };
+      path = pageToPathMap[pageId] || `/${pageId}`;
+    }
+    window.history.pushState(null, '', path);
+  };
+
+  // Handle scroll to top, URL path routing, and hash-based admin access
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-    // Listen for hash change for "hidden" admin access
-    const handleHash = () => {
-      if (window.location.hash === '#admin') {
+  }, [currentPage]);
+
+  // URL path routing
+  useEffect(() => {
+    const handlePath = () => {
+      let path = window.location.pathname.replace('/', '').toLowerCase();
+      const hash = window.location.hash;
+
+      if (path === 'admin-dashboard') {
+        window.history.replaceState(null, '', '/soldleased');
+        path = 'soldleased';
+      }
+
+      if (hash === '#admin') {
         setCurrentPage('admin');
+        return;
+      }
+
+      const pathMap = {
+        '': 'home',
+        'home': 'home',
+        'about': 'about',
+        'contact': 'contact',
+        'plots': 'plots',
+        'locations': 'locations',
+        'projects': 'projects',
+        'amenities': 'amenities',
+        'book-visit': 'book-visit',
+        'soldleased': 'sold-leased',
+        'sold-leased': 'sold-leased',
+        'buy': 'buy',
+        'sell': 'sell',
+      };
+
+      if (pathMap[path]) {
+        setCurrentPage(pathMap[path]);
       }
     };
     
-    handleHash(); // Check on mount
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
-  }, [currentPage]);
+    handlePath(); // Check on mount
+    window.addEventListener('hashchange', handlePath);
+    window.addEventListener('popstate', handlePath);
+    return () => {
+      window.removeEventListener('hashchange', handlePath);
+      window.removeEventListener('popstate', handlePath);
+    };
+  }, []);
 
   const renderPage = () => {
     if (currentPage.startsWith('buy')) {
@@ -49,7 +107,7 @@ function App() {
 
     switch (currentPage) {
       case 'home':
-        return <Home onNavigate={setCurrentPage} />;
+        return <Home onNavigate={handleNavigate} />;
       case 'plots':
         return <PlotsPage />;
       case 'locations':
@@ -59,30 +117,32 @@ function App() {
       case 'amenities':
         return <AmenitiesPage />;
       case 'about':
-        return <AboutPage onNavigate={setCurrentPage} />;
+        return <AboutPage onNavigate={handleNavigate} />;
       case 'contact':
         return <ContactPage />;
       case 'book-visit':
         return <BookVisitPage />;
+      case 'sold-leased':
+        return <SoldLeasedPage />;
       case 'admin':
         if (!isAdminAuthenticated) {
           return <AdminLogin 
             onLogin={() => setIsAdminAuthenticated(true)} 
-            onBack={() => setCurrentPage('home')}
+            onBack={() => handleNavigate('home')}
           />;
         }
         return <AdminDashboard onLogout={() => {
           setIsAdminAuthenticated(false);
-          setCurrentPage('home');
+          handleNavigate('home');
         }} />;
       default:
-        return <Home onNavigate={setCurrentPage} />;
+        return <Home onNavigate={handleNavigate} />;
     }
   };
 
   return (
     <div className="app">
-      <Layout currentPage={currentPage} onNavigate={setCurrentPage}>
+      <Layout currentPage={currentPage} onNavigate={handleNavigate}>
         {renderPage()}
       </Layout>
     </div>
